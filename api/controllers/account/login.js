@@ -1,5 +1,10 @@
 const jwt = require('jsonwebtoken');
 
+const errorMessages = {
+  invalidUsernameOrPassword: 'Invalid username or password.',
+  serverError: 'Server Error. Try again later or please call 8105479727',
+};
+
 module.exports = {
 
   friendlyName: 'Login',
@@ -26,24 +31,43 @@ module.exports = {
       responseType: 'successWithData',
     },
 
-    usernameOrMobileRequired: {
+    invalidUsernameOrPassword: {
       statusCode: 400,
       responseType: 'validationError',
     },
 
-    badUsernamePasswordCombo: {
-      statusCode: 403,
-      responseType: 'unauthorized'
+    serverError: {
+      statusCode: 500,
+      responseType: 'serverError',
     },
   },
 
-  fn: async function (inputs) {
+  fn: async function (inputs, exits) {
+
+    const { username, password } = inputs;
 
     const jwtKey = sails.config.custom.jwtKey;
 
-    const user = await User.findOne({ username: 'inventory' });
+    try {
+      const user = await User.findOne({ username, password });
 
-    this.res.json(user);
+      if (!user) {
+        exits.invalidUsernameOrPassword(errorMessages.invalidUsernameOrPassword);
+        return;
+      }
+
+      const token = jwt.sign(
+        { username, type: user.userType },
+        jwtKey,
+        { expiresIn: '365d' }
+      );
+
+      await User.updateOne({ username }).set({ token });
+
+      exits.successWithData({ username, token });
+    } catch (e) {
+      exits.serverError(errorMessages.serverError);
+    }
 
   }
 

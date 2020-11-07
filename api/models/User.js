@@ -27,5 +27,10 @@ module.exports = {
       type: 'string',
       description: 'Whether this user is a "super admin" with extra permissions, etc.',
     },
+
+    token: {
+      type: 'string',
+      description: 'Users token on login',
+    }
   },
 };
