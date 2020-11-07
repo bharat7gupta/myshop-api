@@ -1,7 +1,9 @@
+const jwt = require('jsonwebtoken');
+
 /**
- * is-super-admin
+ * is-logged-in
  *
- * A simple policy that blocks requests from non-super-admins.
+ * A simple policy that allows any request from an authenticated user.
  *
  * For more about how to use policies, see:
  *   https://sailsjs.com/config/policies
@@ -10,19 +12,27 @@
  */
 module.exports = async function (req, res, proceed) {
 
-  // First, check whether the request comes from a logged-in user.
-  // > For more about where `req.me` comes from, check out this app's
-  // > custom hook (`api/hooks/custom/index.js`).
-  if (!req.me) {
-    return res.unauthorized();
-  }//•
+  if (req.headers['token']) {
+    try {
+      const decoded = jwt.verify(req.headers['token'], sails.config.custom.jwtKey);
+      const userRecord = await User.findOne({
+        username: decoded.username,
+        userType: decoded.type,
+      });
 
-  // Then check that this user is a "super admin".
-  if (!req.me.isSuperAdmin) {
-    return res.forbidden();
-  }//•
+      if (userRecord && userRecord.type === 'ADMIN') {
+        return proceed();
+      }
+      else {
+        return res.unauthorized({ code: 'FORBIDDEN', message: 'You would need to log in.' });
+      }
+    } catch(e) {
+      return res.unauthorized({ code: 'FORBIDDEN', message: 'You would need to log in.' });
+    }
+  }
 
-  // IWMIH, we've got ourselves a "super admin".
-  return proceed();
+  //--•
+  // Otherwise, this request did not come from a logged-in user.
+  return res.unauthorized({ code: 'FORBIDDEN', message: 'You would need to log in.' });
 
 };

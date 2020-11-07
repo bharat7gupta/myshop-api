@@ -11,6 +11,7 @@
 module.exports.policies = {
 
   '*': 'is-logged-in',
+  'product/save': 'is-logged-in',
 
   // Bypass the `is-logged-in` policy for:
   'entrance/*': true,
