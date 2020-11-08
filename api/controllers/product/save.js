@@ -1,7 +1,7 @@
 const errorMessages = {
   invalidBarcode: 'Invalid barcode.',
   invalidProductName: 'Invalid product name.',
-  invalidBrand: 'Invalid brand.',
+  invalidProductShortName: 'Invalid product short name.',
   alreadyExists: 'Product already exists with name: ',
   serverError: 'Server Error. Try again later or please call 8105479727',
 };
@@ -23,9 +23,9 @@ module.exports = {
       example: 'Colgate Salt',
     },
 
-    brand: {
+    productShortName: {
       type: 'string',
-      example: 'Colgate',
+      example: 'CLGT SLT',
     },
   },
 
@@ -52,7 +52,7 @@ module.exports = {
   },
 
   fn: async function (inputs, exits) {
-    const { barcode, productName, brand } = inputs;
+    const { barcode, productName, productShortName = '' } = inputs;
 
     if (!barcode || barcode.length < 10) {
       throw exits.validationError(errorMessages.invalidBarcode);
@@ -60,21 +60,21 @@ module.exports = {
     else if (!productName || productName.trim().length <= 2) {
       throw exits.validationError(errorMessages.invalidProductName);
     }
-    else if (brand && brand.trim().length === 0) {
-      throw exits.validationError(errorMessages.invalidBrand);
+    else if (productShortName && productShortName.trim().length === 0) {
+      throw exits.validationError(errorMessages.invalidProductShortName);
     }
 
     try {
       const checkIfExistingProduct = await Product.findOne({ barcode });
 
       if (checkIfExistingProduct && checkIfExistingProduct.productName) {
-        await Product.updateOne({ barcode }).set({ productName, brand: brand || '' });
+        await Product.updateOne({ barcode }).set({ productName, productShortName });
 
-        exits.successWithData({ ...checkIfExistingProduct, productName, brand: brand || '' });
+        exits.successWithData({ ...checkIfExistingProduct, productName, productShortName });
         return;
       }
 
-      const newProduct = await Product.create({ barcode, productName, brand: brand || '' });
+      const newProduct = await Product.create({ barcode, productName, productShortName }).fetch();
 
       exits.successWithData(newProduct);
     } catch (e) {

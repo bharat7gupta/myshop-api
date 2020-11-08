@@ -14,9 +14,9 @@ module.exports = {
       example: 'Colgate Salt',
     },
 
-    brand: {
+    productShortName: {
       type: 'string',
-      example: 'Colgate',
+      example: 'CLGT',
     },
   },
 
