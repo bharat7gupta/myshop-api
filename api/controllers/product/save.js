@@ -68,7 +68,9 @@ module.exports = {
       const checkIfExistingProduct = await Product.findOne({ barcode });
 
       if (checkIfExistingProduct && checkIfExistingProduct.productName) {
-        exits.alreadyExists(errorMessages.alreadyExists + checkIfExistingProduct.productName);
+        await Product.updateOne({ barcode }).set({ productName, brand: brand || '' });
+
+        exits.successWithData({ ...checkIfExistingProduct, productName, brand: brand || '' });
         return;
       }
 
