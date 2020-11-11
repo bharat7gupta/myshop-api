@@ -10,6 +10,11 @@ module.exports = {
       example: 'bharat'
     },
 
+    displayUsername: {
+      type: 'string',
+      description: 'display user name.',
+    },
+
     password: {
       type: 'string',
       required: true,

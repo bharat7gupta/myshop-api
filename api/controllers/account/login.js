@@ -64,7 +64,7 @@ module.exports = {
 
       await User.updateOne({ username }).set({ token });
 
-      exits.successWithData({ username, token });
+      exits.successWithData({ username: user.displayUsername, token });
     } catch (e) {
       exits.serverError(errorMessages.serverError);
     }

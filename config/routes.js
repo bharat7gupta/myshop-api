@@ -62,6 +62,8 @@ module.exports.routes = {
   'POST  /api/v1/entrance/send-password-recovery-email': { action: 'entrance/send-password-recovery-email' },
   'POST  /api/v1/entrance/update-password-and-login':    { action: 'entrance/update-password-and-login' },
   'POST  /api/v1/deliver-contact-form-message':          { action: 'deliver-contact-form-message' },
-  'POST  /api/v1/product/save':                            { action: 'product/save' },
-  'GET  /api/v1/product/get-all':                            { action: 'product/get-all' },
+  'POST  /api/v1/product/save':                          { action: 'product/save' },
+  'GET  /api/v1/product/get-all':                        { action: 'product/get-all' },
+  'GET  /api/v1/product/get-custom-barcode':             { action: 'product/get-custom-barcode' },
+  'POST  /api/v1/inventory/add':                          { action: 'inventory/add' },
 };
