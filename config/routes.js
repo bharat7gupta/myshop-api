@@ -65,5 +65,6 @@ module.exports.routes = {
   'POST  /api/v1/product/save':                          { action: 'product/save' },
   'GET  /api/v1/product/get-all':                        { action: 'product/get-all' },
   'GET  /api/v1/product/get-custom-barcode':             { action: 'product/get-custom-barcode' },
-  'POST  /api/v1/inventory/add':                          { action: 'inventory/add' },
+  'POST  /api/v1/inventory/add':                         { action: 'inventory/add' },
+  'GET  /api/v1/inventory/status':                       { action: 'inventory/status' },
 };

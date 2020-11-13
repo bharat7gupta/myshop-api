@@ -18,6 +18,11 @@ module.exports = {
       type: 'string',
       example: 'CLGT',
     },
+
+    size: {
+      type: 'string',
+      example: '200g, 500ml, 10N',
+    }
   },
 
 };

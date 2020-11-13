@@ -4,9 +4,9 @@ const errorMessages = {
 
 module.exports = {
 
-  friendlyName: 'Get all products',
+  friendlyName: 'Status',
 
-  description: 'Get all products',
+  description: 'Status inventory.',
 
   inputs: {
 
@@ -25,14 +25,16 @@ module.exports = {
   },
 
   fn: async function (inputs, exits) {
-    try {
-      const allProducts = await Product.find({});
 
-      exits.successWithData(allProducts.map(p => ({
-        barcode: p.barcode,
-        productName: p.productName,
-        productShortName: p.productShortName,
-        size: p.size,
+    try {
+      const allInventory = await InventoryStatus.find({});
+
+      exits.successWithData(allInventory.map(inv => ({
+        barcode: inv.barcode,
+        mrp: inv.mrp,
+        purchasePrice: inv.purchasePrice,
+        sellingPrice: inv.sellingPrice,
+        quantity: inv.quantity,
       })));
 
     } catch (e) {

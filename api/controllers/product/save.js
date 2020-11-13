@@ -27,6 +27,11 @@ module.exports = {
       type: 'string',
       example: 'CLGT SLT',
     },
+
+    size: {
+      type: 'string',
+      example: '200g, 500ml, 10N',
+    },
   },
 
   exits: {
@@ -52,7 +57,7 @@ module.exports = {
   },
 
   fn: async function (inputs, exits) {
-    const { barcode, productName, productShortName = '' } = inputs;
+    const { barcode, productName, productShortName = '', size = '' } = inputs;
 
     if (!barcode || barcode.length < 10) {
       throw exits.validationError(errorMessages.invalidBarcode);
@@ -68,13 +73,13 @@ module.exports = {
       const checkIfExistingProduct = await Product.findOne({ barcode });
 
       if (checkIfExistingProduct && checkIfExistingProduct.productName) {
-        await Product.updateOne({ barcode }).set({ productName, productShortName });
+        await Product.updateOne({ barcode }).set({ productName, productShortName, size });
 
         exits.successWithData({ ...checkIfExistingProduct, productName, productShortName });
         return;
       }
 
-      const newProduct = await Product.create({ barcode, productName, productShortName }).fetch();
+      const newProduct = await Product.create({ barcode, productName, productShortName, size }).fetch();
 
       exits.successWithData(newProduct);
     } catch (e) {

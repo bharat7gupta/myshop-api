@@ -14,6 +14,8 @@ module.exports.policies = {
   'product/save': 'is-logged-in',
   'product/get-all': 'is-logged-in',
   'product/get-custom-barcode': 'is-logged-in',
+  'inventory/add': 'is-logged-in',
+  'inventory/status': 'is-logged-in',
 
   // Bypass the `is-logged-in` policy for:
   'entrance/*': true,
@@ -25,5 +27,4 @@ module.exports.policies = {
   'legal/view-terms': true,
   'legal/view-privacy': true,
   'deliver-contact-form-message': true,
-  'inventory/add': true,
 };

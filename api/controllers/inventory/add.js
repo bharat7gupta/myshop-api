@@ -50,7 +50,7 @@ module.exports = {
     try {
       // check if all barcodes are existing
       const barcodes = products.map(p => p.barcode);
-      const barcodeListStr = barcodes.map(barcode => `'${barcode}'`).join('');
+      const barcodeListStr = barcodes.map(barcode => `'${barcode}'`).join(', ');
       const barcodesQuery = 'select barcode from product where barcode in (' + barcodeListStr + ');';
       const barcodesResult = await sails.sendNativeQuery(barcodesQuery);
 
