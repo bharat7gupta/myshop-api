@@ -79,9 +79,9 @@ module.exports = {
         return;
       }
 
-      const newProduct = await Product.create({ barcode, productName, productShortName, size }).fetch();
+      const newProduct = await Product.create({ barcode, productName, productShortName, size });
 
-      exits.successWithData(newProduct);
+      exits.successWithData({ barcode, productName, productShortName, size });
     } catch (e) {
       exits.serverError(errorMessages.serverError);
     }
