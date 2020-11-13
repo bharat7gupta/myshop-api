@@ -75,7 +75,7 @@ module.exports = {
       if (checkIfExistingProduct && checkIfExistingProduct.productName) {
         await Product.updateOne({ barcode }).set({ productName, productShortName, size });
 
-        exits.successWithData({ ...checkIfExistingProduct, productName, productShortName });
+        exits.successWithData({ ...checkIfExistingProduct, productName, productShortName, size });
         return;
       }
 
