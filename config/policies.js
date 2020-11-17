@@ -16,6 +16,7 @@ module.exports.policies = {
   'product/get-custom-barcode': 'is-logged-in',
   'inventory/add': 'is-logged-in',
   'inventory/status': 'is-logged-in',
+  'order/create': 'is-logged-in',
 
   // Bypass the `is-logged-in` policy for:
   'entrance/*': true,
